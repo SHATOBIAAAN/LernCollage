@@ -1,1 +1,1 @@
-# LernCollage
+# LernCollege
