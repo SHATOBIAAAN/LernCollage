@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Custom Form Field</title>
+    </head>
+    <body>
+        <custom-form-field type="text" placeholder="name"></custom-form-field>
+        <custom-form-field type="email" placeholder="email"></custom-form-field>
+        <custom-form-field
+            type="textarea"
+            placeholder="textarea"
+        ></custom-form-field>
+
+        <script>
+            class CustomFormField extends HTMLElement {
+                constructor() {
+                    super()
+                    const shadow = this.attachShadow({ mode: 'open' })
+                    shadow.innerHTML = `
+                    <style>
+                        :host {
+                            display: block;
+                            position: relative;
+                        }
+                        label {
+                            position: absolute;
+                            top: 50%;
+                            left: 25px;
+                            font-size:25px;
+                            transform: translateY(-50%);
+                            transition: 0.2s ease all;
+                            pointer-events: none;
+                            color: #999;
+                        }
+                        input:focus + label,
+                        input:not(:placeholder-shown) + label,
+                        textarea:focus + label,
+                        textarea:not(:placeholder-shown) + label {
+                            top: 0;
+                            left: 18px;
+                            font-size: 20px;
+                            color: #333;
+                        }
+                        input,
+                        textarea {
+                            color: black;
+                            width: 90%;
+                            padding-top: 10px;
+                            padding-bottom: 10px;
+                            margin: 15px;
+                            border-radius: 8px;
+                            border: 2px solid #ccc;
+                            box-sizing: border-box;
+                        }
+                    </style>
+                    <div>
+                        ${this.getInputElement()}
+                        <label>${this.getAttribute('placeholder')}</label>
+                    </div>
+                `
+                }
+
+                getInputElement() {
+                    const type = this.getAttribute('type')
+                    if (type === 'textarea') {
+                        return `<textarea placeholder=" "></textarea>`
+                    } else {
+                        return `<input type="${type}" placeholder=" ">`
+                    }
+                }
+            }
+
+            customElements.define('custom-form-field', CustomFormField)
+        </script>
+    </body>
+</html>
